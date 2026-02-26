@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DormPair — Smart Hostel Management System</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div class="auth-screen visible" id="loginScreen">
+  <div class="auth-container">
+    <div class="auth-art">
+      <div>
+        <div class="auth-logo">🏩 DormPair</div>
+        <div class="auth-logo-sub">Smart Management System</div>
+      </div>
+      <div class="auth-art-text">
+        <div class="auth-art-headline">Manage your<br>hostel smarter.</div>
+        <div class="auth-art-sub">Real-time room allocation, smart search, guest management, and full analytics — all in one place.</div>
+        <div class="auth-feature-list">
+          <div class="auth-feature"><span class="auth-feature-dot"></span> Automated room allocation algorithm</div>
+          <div class="auth-feature"><span class="auth-feature-dot"></span> AC & attached washroom filters</div>
+          <div class="auth-feature"><span class="auth-feature-dot"></span> Real-time capacity tracking</div>
+          <div class="auth-feature"><span class="auth-feature-dot"></span> Guest check-in / check-out management</div>
+          <div class="auth-feature"><span class="auth-feature-dot"></span> Billing, maintenance & inventory tools</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);"> Smart Hostel Room Allocation</div>
+    </div>
+    <div class="auth-form-wrap">
+      <div class="auth-title">Welcome back 👋</div>
+      <div class="auth-subtitle">Sign in to your hostel room allocator</div>
+      <div class="auth-form">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="login-email" placeholder="admin@hostel.com" value="admin@hostel.com">
+          <div class="field-error" id="login-email-err">Please enter a valid email</div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-pass" placeholder="••••••••" value="admin123">
+          <div class="field-error" id="login-pass-err">Password must be at least 6 characters</div>
+        </div>
+        <button class="btn btn-primary btn-w100" onclick="doLogin()" style="margin-top:4px;">Sign In →</button>
+        <div class="auth-divider"><span>OR</span></div>
+        <button class="btn btn-secondary btn-w100" onclick="demoLogin()">🚀 Demo Login (skip)</button>
+      </div>
+      <div class="auth-switch">Don't have an account? <a onclick="showScreen('signup')">Create one</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SIGNUP SCREEN ============ -->
+<div class="auth-screen" id="signupScreen">
+  <div class="auth-container">
+    <div class="auth-art">
+      <div>
+        <div class="auth-logo">🏩 DormPair</div>
+        <div class="auth-logo-sub">Smart Management System</div>
+      </div>
+      <div class="auth-art-text">
+        <div class="auth-art-headline">Join DormPair<br>today.</div>
+        <div class="auth-art-sub">Set up your hostel management system in minutes. No credit card required.</div>
+        <div class="auth-feature-list">
+          <div class="auth-feature"><span class="auth-feature-dot"></span> Full room management dashboard</div>
+          <div class="auth-feature"><span class="auth-feature-dot"></span> Smart allocation algorithm</div>
+          <div class="auth-feature"><span class="auth-feature-dot"></span> Guest & booking management</div>
+          <div class="auth-feature"><span class="auth-feature-dot"></span> Analytics & revenue reports</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);">Assignment-1 · Smart Hostel Room Allocation</div>
+    </div>
+    <div class="auth-form-wrap">
+      <div class="auth-title">Create account ✨</div>
+      <div class="auth-subtitle">Get started with your free hostel account</div>
+      <div class="auth-form">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="su-name" placeholder="Your full name">
+          <div class="field-error" id="su-name-err">Name is required</div>
+        </div>
+        <div class="form-group">
+          <label>Hostel / Organization Name</label>
+          <input type="text" id="su-hostel" placeholder="e.g. City Backpackers Hostel">
+          <div class="field-error" id="su-hostel-err">Hostel name is required</div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="su-email" placeholder="you@example.com">
+          <div class="field-error" id="su-email-err">Valid email required</div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="su-pass" placeholder="Min 6 characters">
+          <div class="field-error" id="su-pass-err">Min 6 characters required</div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="su-pass2" placeholder="Repeat password">
+          <div class="field-error" id="su-pass2-err">Passwords do not match</div>
+        </div>
+        <button class="btn btn-primary btn-w100" onclick="doSignup()" style="margin-top:4px;">Create Account →</button>
+      </div>
+      <div class="auth-switch">Already have an account? <a onclick="showScreen('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MAIN APP ============ -->
+<div class="app" id="mainApp">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-text">🏩 DormPair</div>
+      <div class="logo-sub">Management System</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <div class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
+      <div class="nav-section-label">Room Allocation</div>
+      <div class="nav-item" onclick="navigate('addroom')"><span class="nav-icon">➕</span> Add Room</div>
+      <div class="nav-item" onclick="navigate('allrooms')"><span class="nav-icon">🏠</span> View All Rooms</div>
+      <div class="nav-item" onclick="navigate('searchrooms')"><span class="nav-icon">🔍</span> Search & Filter Rooms</div>
+      <div class="nav-item" onclick="navigate('allocate')"><span class="nav-icon">⚡</span> Allocate Room</div>
+      <div class="nav-section-label">Operations</div>
+      <div class="nav-item" onclick="navigate('guests')"><span class="nav-icon">👥</span> Guests <span class="nav-badge" id="guestBadge">—</span></div>
+      <div class="nav-item" onclick="navigate('checkin')"><span class="nav-icon">✅</span> Check In/Out</div>
+      <div class="nav-item" onclick="navigate('bookings')"><span class="nav-icon">📅</span> Bookings</div>
+      <div class="nav-item" onclick="navigate('billing')"><span class="nav-icon">💳</span> Billing</div>
+      <div class="nav-item" onclick="navigate('maintenance')"><span class="nav-icon">🔧</span> Maintenance <span class="nav-badge red" id="maintBadge">2</span></div>
+      <div class="nav-item" onclick="navigate('inventory')"><span class="nav-icon">📦</span> Inventory</div>
+      <div class="nav-section-label">Reports</div>
+      <div class="nav-item" onclick="navigate('reports')"><span class="nav-icon">📈</span> Analytics</div>
+      <div class="nav-item" onclick="navigate('notifications')"><span class="nav-icon">🔔</span> Notifications <span class="nav-badge" id="notifBadge">5</span></div>
+      <div class="nav-item" onclick="navigate('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="admin-card">
+        <div class="admin-avatar" id="adminAvatar">A</div>
+        <div>
+          <div class="admin-name" id="adminName">Admin</div>
+          <div class="admin-role" id="adminRole">Hostel Manager</div>
+        </div>
+        <span style="margin-left:auto;cursor:pointer;font-size:16px;color:var(--text-dim);" onclick="logout()" title="Logout">🚪</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="pageTitle">Dashboard</div>
+      <div class="topbar-search">
+        <span style="color:var(--text-dim)">🔍</span>
+        <input type="text" placeholder="Search rooms, guests..." id="globalSearch" oninput="globalSearchFn(this.value)">
+      </div>
+      <div class="topbar-btn" onclick="navigate('notifications')">
+        🔔
+        <span class="notif-dot" id="notifIndicator"></span>
+      </div>
+      <div class="topbar-btn" onclick="navigate('addroom')">➕</div>
+    </div>
+
+    <!-- ===== DASHBOARD PAGE ===== -->
+    <div class="page active" id="page-dashboard">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Good morning, <span id="dashName">Admin</span> 👋</div>
+          <div class="section-sub" id="currentDate"></div>
+        </div>
+        <div class="flex-row">
+          <button class="btn btn-secondary btn-sm" onclick="exportReport()">📤 Export</button>
+          <button class="btn btn-primary btn-sm" onclick="navigate('allocate')">⚡ Allocate Room</button>
+        </div>
+      </div>
+      <div class="quick-grid">
+        <div class="quick-btn" onclick="navigate('addroom')"><div class="quick-btn-icon">➕</div><div class="quick-btn-label">Add Room</div></div>
+        <div class="quick-btn" onclick="navigate('allrooms')"><div class="quick-btn-icon">🏠</div><div class="quick-btn-label">View Rooms</div></div>
+        <div class="quick-btn" onclick="navigate('searchrooms')"><div class="quick-btn-icon">🔍</div><div class="quick-btn-label">Search Rooms</div></div>
+        <div class="quick-btn" onclick="navigate('allocate')"><div class="quick-btn-icon">⚡</div><div class="quick-btn-label">Allocate Room</div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card blue"><div class="stat-icon">🏠</div><div class="stat-value" id="dash-total">—</div><div class="stat-label">Total Rooms</div><div class="stat-change" id="dash-total-sub"></div></div>
+        <div class="stat-card green"><div class="stat-icon">✅</div><div class="stat-value" id="dash-vacant">—</div><div class="stat-label">Vacant Rooms</div><div class="stat-change" id="dash-vacant-sub"></div></div>
+        <div class="stat-card orange"><div class="stat-icon">👥</div><div class="stat-value" id="dash-occupied">—</div><div class="stat-label">Occupied Rooms</div><div class="stat-change" id="dash-occ-sub"></div></div>
+        <div class="stat-card purple"><div class="stat-icon">🌡️</div><div class="stat-value" id="dash-ac">—</div><div class="stat-label">AC Rooms</div><div class="stat-change" id="dash-ac-sub"></div></div>
+      </div>
+      <div class="grid-cols-3-1 mb-16">
+        <div class="card">
+          <div class="card-title">📈 Weekly Revenue</div>
+          <div class="rev-chart" id="revenueChart"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🏠 Occupancy</div>
+          <div class="ring-wrap mt-16">
+            <svg width="88" height="88" class="ring-svg">
+              <circle cx="44" cy="44" r="36" fill="none" stroke="var(--border)" stroke-width="7"/>
+              <circle cx="44" cy="44" r="36" fill="none" stroke="var(--accent)" stroke-width="7"
+                stroke-dasharray="226" id="occupancyArc" stroke-dashoffset="56" stroke-linecap="round"/>
+            </svg>
+            <div class="ring-info">
+              <div class="ring-percent" id="occupancyPct">—%</div>
+              <div class="ring-sub">Occupancy Rate</div>
+              <div class="mt-16" id="occupancyLegend"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">⚡ Recent Activity</div>
+          <div class="activity-list" id="activityFeed"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🏠 Room Status Overview</div>
+          <div id="dashRoomMini"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ADD ROOM PAGE ===== -->
+    <div class="page" id="page-addroom">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Add New Room</div>
+          <div class="section-sub">Register a new room in the hostel system</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🏠 Room Details</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="form-group">
+              <label>Room Number *</label>
+              <input type="text" id="ar-num" placeholder="e.g. 101, A-201, G-01">
+              <div class="field-error" id="ar-num-err">Room number is required</div>
+            </div>
+            <div class="form-group">
+              <label>Capacity (Max Students) *</label>
+              <input type="number" id="ar-cap" min="1" max="20" placeholder="e.g. 4">
+              <div class="field-error" id="ar-cap-err">Capacity must be at least 1</div>
+            </div>
+            <div class="form-group">
+              <label>Room Type</label>
+              <select id="ar-type">
+                <option value="Dormitory">Dormitory</option>
+                <option value="Private Single">Private Single</option>
+                <option value="Private Double">Private Double</option>
+                <option value="Family Suite">Family Suite</option>
+                <option value="Triple Room">Triple Room</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Floor</label>
+              <select id="ar-floor">
+                <option>Ground Floor</option>
+                <option>1st Floor</option>
+                <option>2nd Floor</option>
+                <option>3rd Floor</option>
+                <option>4th Floor</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;padding:16px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);">
+              <div style="font-size:12px;font-family:var(--font-mono);color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Facilities</div>
+              <label class="checkbox-row">
+                <input type="checkbox" id="ar-ac">
+                <span>🌡️ Has AC (Air Conditioning)</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="ar-wash">
+                <span>🚿 Has Attached Washroom</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="ar-wifi" checked>
+                <span>📶 Has WiFi</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="ar-locker">
+                <span>🔒 Has Lockers</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label>Price per Night (₹)</label>
+              <input type="number" id="ar-price" placeholder="e.g. 500">
+            </div>
+            <div class="flex-row mt-16">
+              <button class="btn btn-primary" onclick="addRoom()">➕ Add Room</button>
+              <button class="btn btn-secondary" onclick="clearAddRoom()">Clear</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📋 Recently Added Rooms</div>
+          <div id="recentlyAdded">
+            <div style="text-align:center;color:var(--text-dim);padding:40px 0;font-size:13px;">No rooms added yet in this session</div>
+          </div>
+          <div class="card" style="margin-top:16px;background:var(--surface2);">
+            <div class="card-title">💡 Tips</div>
+            <ul style="font-size:13px;color:var(--text-mid);line-height:2;padding-left:18px;">
+              <li>Room numbers must be <strong>unique</strong></li>
+              <li>Capacity = max students that can occupy the room</li>
+              <li>AC & Washroom flags are used by the allocation algorithm</li>
+              <li>The system picks the <strong>smallest suitable room</strong> automatically</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== VIEW ALL ROOMS PAGE ===== -->
+    <div class="page" id="page-allrooms">
+      <div class="section-header">
+        <div>
+          <div class="section-title">All Rooms</div>
+          <div class="section-sub" id="allrooms-sub">Showing all rooms</div>
+        </div>
+        <div class="flex-row">
+          <select id="allrooms-sort" onchange="renderAllRooms()" style="padding:7px 12px;font-size:13px;width:auto;">
+            <option value="num">Sort by Room No.</option>
+            <option value="cap">Sort by Capacity</option>
+            <option value="status">Sort by Status</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="navigate('addroom')">+ Add Room</button>
+        </div>
+      </div>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="filterAllRooms('all',this)">All</button>
+        <button class="filter-btn" onclick="filterAllRooms('vacant',this)">🔵 Vacant</button>
+        <button class="filter-btn" onclick="filterAllRooms('occupied',this)">🟢 Occupied</button>
+        <button class="filter-btn" onclick="filterAllRooms('maintenance',this)">🟡 Maintenance</button>
+        <button class="filter-btn" onclick="filterAllRooms('ac',this)">🌡️ AC Rooms</button>
+        <button class="filter-btn" onclick="filterAllRooms('washroom',this)">🚿 Attached Washroom</button>
+      </div>
+      <!-- TABLE VIEW -->
+      <div class="card mb-16">
+        <div class="card-title">📋 Room Listing</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Room No.</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Floor</th>
+                <th>AC</th>
+                <th>Attached Washroom</th>
+                <th>Price/Night</th>
+                <th>Status</th>
+                <th>Occupant</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="allRoomsTable"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- CARD VIEW -->
+      <div class="card">
+        <div class="card-title">🏠 Visual Room Grid</div>
+        <div class="rooms-grid" id="allRoomsGrid"></div>
+      </div>
+    </div>
+
+    <!-- ===== SEARCH ROOMS PAGE ===== -->
+    <div class="page" id="page-searchrooms">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Search & Filter Rooms</div>
+          <div class="section-sub">Find rooms that match specific requirements</div>
+        </div>
+      </div>
+      <!-- SEARCH FILTERS -->
+      <div class="search-filter-card">
+        <div class="card-title">🔍 Search Criteria</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div class="form-group">
+            <label>Min. Capacity Required</label>
+            <input type="number" id="sr-cap" min="1" placeholder="e.g. 2 (leave blank for any)">
+          </div>
+          <div class="form-group">
+            <label>AC Required</label>
+            <select id="sr-ac">
+              <option value="any">Any</option>
+              <option value="yes">Yes — AC required</option>
+              <option value="no">No — Non-AC only</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Attached Washroom Required</label>
+            <select id="sr-wash">
+              <option value="any">Any</option>
+              <option value="yes">Yes — Attached washroom</option>
+              <option value="no">No — Shared washroom only</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div class="form-group">
+            <label>Room Status</label>
+            <select id="sr-status">
+              <option value="any">Any Status</option>
+              <option value="vacant">Vacant only</option>
+              <option value="occupied">Occupied only</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Room Type</label>
+            <select id="sr-type">
+              <option value="any">Any Type</option>
+              <option>Dormitory</option>
+              <option>Private Single</option>
+              <option>Private Double</option>
+              <option>Family Suite</option>
+              <option>Triple Room</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Max Price per Night (₹)</label>
+            <input type="number" id="sr-price" placeholder="e.g. 1000 (leave blank for any)">
+          </div>
+        </div>
+        <div class="flex-row">
+          <button class="btn btn-primary" onclick="searchRooms()">🔍 Search Rooms</button>
+          <button class="btn btn-secondary" onclick="resetSearch()">↺ Reset</button>
+        </div>
+      </div>
+      <!-- SEARCH OUTPUT PANEL -->
+      <div id="searchResultPanel">
+        <div class="card">
+          <div class="card-title" id="searchResultTitle">📋 Search Results</div>
+          <div id="searchResultContent">
+            <div style="text-align:center;color:var(--text-dim);padding:50px 0;font-size:14px;">
+              <div style="font-size:36px;margin-bottom:12px;">🔍</div>
+              Use the filters above and click <strong style="color:var(--text)">Search Rooms</strong> to find matching rooms.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ALLOCATE ROOM PAGE ===== -->
+    <div class="page" id="page-allocate">
+      <div class="section-header">
+        <div>
+          <div class="section-title">⚡ Allocate Room</div>
+          <div class="section-sub">Automatically allocate the best-fit room for a group of students</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="allocate-panel">
+          <div class="card-title">🎯 Allocation Parameters</div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="form-group">
+              <label>Number of Students *</label>
+              <input type="number" id="alloc-students" min="1" placeholder="How many students need the room?">
+              <div class="field-error" id="alloc-students-err">Please enter number of students</div>
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+              <div style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Facility Requirements</div>
+              <label class="checkbox-row">
+                <input type="checkbox" id="alloc-ac">
+                <span>🌡️ AC Required</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="alloc-wash">
+                <span>🚿 Attached Washroom Required</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label>Student Name(s) — Optional</label>
+              <input type="text" id="alloc-name" placeholder="e.g. Ravi, Priya, Ankit">
+            </div>
+            <button class="btn btn-primary btn-w100" onclick="allocateRoom()" style="margin-top:4px;">⚡ Find & Allocate Best Room</button>
+            <button class="btn btn-secondary btn-w100" onclick="clearAllocate()">↺ Clear</button>
+          </div>
+        </div>
+
+        <!-- OUTPUT DISPLAY PANEL -->
+        <div class="allocate-panel">
+          <div class="card-title">📋 Allocation Result</div>
+          <div class="allocate-result" id="allocateResult">
+            <div style="text-align:center;color:var(--text-dim);padding:20px 0;font-size:13px;">
+              <div style="font-size:36px;margin-bottom:8px;">⚡</div>
+              Fill in the parameters and click <strong style="color:var(--text)">Find & Allocate Best Room</strong>
+            </div>
+          </div>
+          <div class="card mt-16" style="background:var(--surface2);">
+            <div class="card-title">ℹ️ Algorithm Info</div>
+            <div style="font-size:13px;color:var(--text-mid);line-height:1.8;">
+              The <strong style="color:var(--accent)">AllocateRoom</strong> algorithm:<br>
+              1. Filters rooms that are <strong>vacant</strong><br>
+              2. Filters rooms where <code style="background:var(--surface3);padding:1px 5px;border-radius:4px;font-family:var(--font-mono)">capacity ≥ students</code><br>
+              3. Applies AC filter if required<br>
+              4. Applies washroom filter if required<br>
+              5. Picks the room with the <strong>smallest capacity</strong> (best fit)<br>
+              6. Marks it as <strong>occupied</strong> if confirmed
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Allocation History -->
+      <div class="card mt-16">
+        <div class="card-title">📋 Allocation History</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Time</th><th>Students</th><th>Room No.</th><th>Capacity</th><th>AC</th><th>Washroom</th><th>Status</th></tr></thead>
+            <tbody id="allocHistory"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== GUESTS PAGE ===== -->
+    <div class="page" id="page-guests">
+      <div class="section-header">
+        <div><div class="section-title">Guest Management</div><div class="section-sub">All registered guests</div></div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('addGuestModal')">+ Add Guest</button>
+      </div>
+      <div class="filter-row">
+        <input type="text" placeholder="Search guests..." style="width:200px;padding:7px 12px;" oninput="filterGuestsFn(this.value)">
+        <button class="filter-btn active" onclick="filterGuestStatus('all',this)">All</button>
+        <button class="filter-btn" onclick="filterGuestStatus('active',this)">Active</button>
+        <button class="filter-btn" onclick="filterGuestStatus('checkout',this)">Due Checkout</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Name</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Due Amount</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="guestsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CHECK IN/OUT PAGE ===== -->
+    <div class="page" id="page-checkin">
+      <div class="section-title mb-16">Check In / Check Out</div>
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('checkin-tab',this)">Check In</div>
+        <div class="tab" onclick="switchTab('checkout-tab',this)">Check Out</div>
+      </div>
+      <div id="checkin-tab">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">🚪 Guest Check-In</div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="form-group"><label>Guest Name *</label><input type="text" id="ci-name" placeholder="Full name"></div>
+              <div class="form-group"><label>Phone *</label><input type="tel" id="ci-phone" placeholder="+91 9999999999"></div>
+              <div class="form-group"><label>ID Type</label><select id="ci-idtype"><option>Aadhaar Card</option><option>PAN Card</option><option>Passport</option><option>Voter ID</option></select></div>
+              <div class="form-group"><label>ID Number</label><input type="text" id="ci-idnum" placeholder="ID number"></div>
+              <div class="form-group"><label>Room *</label><select id="ci-room"><option value="">Select Room</option></select></div>
+              <div class="form-group"><label>Check-out Date *</label><input type="date" id="ci-checkout"></div>
+              <div class="form-group"><label>Advance Payment (₹)</label><input type="number" id="ci-advance" placeholder="0"></div>
+              <div class="flex-row mt-16">
+                <button class="btn btn-primary" onclick="processCheckIn()">✅ Confirm Check-In</button>
+                <button class="btn btn-secondary" onclick="clearCheckin()">Clear</button>
+              </div>
+            </div>
+          </div>
+          <div class="card"><div class="card-title">📋 Today's Check-ins</div><div id="todayCheckinList"></div></div>
+        </div>
+      </div>
+      <div id="checkout-tab" class="hidden">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">🏃 Guest Check-Out</div>
+            <div class="form-group mb-16"><label>Find Guest</label><input type="text" id="co-search" placeholder="Search by name or room..." oninput="searchCheckout(this.value)"></div>
+            <div id="checkoutGuestList"></div>
+          </div>
+          <div class="card"><div class="card-title">💳 Final Bill</div><div id="checkoutBillContent"><div style="text-align:center;color:var(--text-dim);padding:40px 0;">Select a guest to view bill</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BOOKINGS PAGE ===== -->
+    <div class="page" id="page-bookings">
+      <div class="section-header">
+        <div><div class="section-title">Bookings</div><div class="section-sub">Manage reservations</div></div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('addBookingModal')">+ New Booking</button>
+      </div>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="filterBookings('all',this)">All</button>
+        <button class="filter-btn" onclick="filterBookings('confirmed',this)">Confirmed</button>
+        <button class="filter-btn" onclick="filterBookings('pending',this)">Pending</button>
+        <button class="filter-btn" onclick="filterBookings('cancelled',this)">Cancelled</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Guest</th><th>Room Type</th><th>Check-in</th><th>Check-out</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="bookingsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BILLING PAGE ===== -->
+    <div class="page" id="page-billing">
+      <div class="section-header">
+        <div><div class="section-title">Billing & Payments</div><div class="section-sub">Invoices and transactions</div></div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('invoiceModal')">+ Record Payment</button>
+      </div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card green"><div class="stat-icon">✅</div><div class="stat-value">₹3.8L</div><div class="stat-label">Collected (Month)</div><div class="stat-change">▲ +18%</div></div>
+        <div class="stat-card orange"><div class="stat-icon">⏳</div><div class="stat-value">₹42K</div><div class="stat-label">Pending Dues</div><div class="stat-change down">▼ 8 guests</div></div>
+        <div class="stat-card blue"><div class="stat-icon">📊</div><div class="stat-value">₹1.2L</div><div class="stat-label">Today's Revenue</div><div class="stat-change">▲ +12%</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">💳 Recent Transactions</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Invoice #</th><th>Guest</th><th>Room</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="billingTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MAINTENANCE PAGE ===== -->
+    <div class="page" id="page-maintenance">
+      <div class="section-header">
+        <div><div class="section-title">Maintenance</div><div class="section-sub">Track repairs and servicing</div></div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('addMaintModal')">+ New Request</button>
+      </div>
+      <div class="grid-cols-3-1">
+        <div class="gap-16">
+          <div class="card"><div class="card-title">🔴 High Priority</div><div id="maint-high"></div></div>
+          <div class="card"><div class="card-title">🟡 Medium Priority</div><div id="maint-medium"></div></div>
+          <div class="card"><div class="card-title">🟢 Low Priority</div><div id="maint-low"></div></div>
+        </div>
+        <div class="gap-16">
+          <div class="card">
+            <div class="card-title">📊 Stats</div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+              <div><div class="flex-row-between" style="font-size:12px;margin-bottom:4px;"><span>Completed</span><span class="td-mono">65%</span></div><div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div></div>
+              <div><div class="flex-row-between" style="font-size:12px;margin-bottom:4px;"><span>In Progress</span><span style="color:var(--yellow);font-size:12px">20%</span></div><div class="progress-bar"><div class="progress-fill" style="width:20%;background:var(--yellow)"></div></div></div>
+              <div><div class="flex-row-between" style="font-size:12px;margin-bottom:4px;"><span>Pending</span><span style="color:var(--red);font-size:12px">15%</span></div><div class="progress-bar"><div class="progress-fill" style="width:15%;background:var(--red)"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INVENTORY PAGE ===== -->
+    <div class="page" id="page-inventory">
+      <div class="section-header">
+        <div><div class="section-title">Inventory Management</div><div class="section-sub">Track supplies and assets</div></div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('addItemModal')">+ Add Item</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Item</th><th>Category</th><th>Stock</th><th>Min Level</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="inventoryTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REPORTS PAGE ===== -->
+    <div class="page" id="page-reports">
+      <div class="section-title mb-16">Analytics & Reports</div>
+      <div class="stats-grid">
+        <div class="stat-card blue"><div class="stat-value">₹12.4L</div><div class="stat-label">Monthly Revenue</div><div class="stat-change">▲ +22%</div></div>
+        <div class="stat-card green"><div class="stat-value">83%</div><div class="stat-label">Avg Occupancy</div><div class="stat-change">▲ +5%</div></div>
+        <div class="stat-card orange"><div class="stat-value">4.8⭐</div><div class="stat-label">Guest Rating</div><div class="stat-change">▲ +0.2</div></div>
+        <div class="stat-card purple"><div class="stat-value">192</div><div class="stat-label">Total Guests</div><div class="stat-change">▲ +31</div></div>
+      </div>
+      <div class="card mt-16">
+        <div class="section-header">
+          <div class="card-title">📋 Monthly Report</div>
+          <button class="btn btn-secondary btn-sm" onclick="exportReport()">📤 Download CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Month</th><th>Revenue</th><th>Room Revenue</th><th>Extras</th><th>Occupancy</th><th>Guests</th></tr></thead>
+            <tbody id="reportsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NOTIFICATIONS PAGE ===== -->
+    <div class="page" id="page-notifications">
+      <div class="section-header">
+        <div class="section-title">Notifications</div>
+        <button class="btn btn-secondary btn-sm" onclick="markAllRead()">Mark all read</button>
+      </div>
+      <div class="card"><div id="notifList"></div></div>
+    </div>
+
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div class="page" id="page-settings">
+      <div class="section-title mb-16">Settings</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🏨 Hostel Information</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="form-group"><label>Hostel Name</label><input type="text" id="hostel-name" value="DormPair Premium"></div>
+            <div class="form-group"><label>Email</label><input type="email" value="admin@hostel.com"></div>
+            <div class="form-group"><label>Phone</label><input type="tel" value="+91 98765 43210"></div>
+            <div class="form-group"><label>Address</label><textarea>123, Main Street, New Delhi - 110001</textarea></div>
+          </div>
+          <button class="btn btn-primary mt-16" onclick="showToast('Settings saved!','success')">💾 Save Changes</button>
+        </div>
+        <div class="card">
+          <div class="card-title">💰 Room Pricing (₹/night)</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="form-group"><label>Dormitory (per bed)</label><input type="number" value="350"></div>
+            <div class="form-group"><label>Private Single</label><input type="number" value="800"></div>
+            <div class="form-group"><label>Private Double</label><input type="number" value="1200"></div>
+            <div class="form-group"><label>Family Suite</label><input type="number" value="2000"></div>
+          </div>
+          <button class="btn btn-primary mt-16" onclick="showToast('Pricing updated!','success')">💾 Save Pricing</button>
+        </div>
+        <div class="card">
+          <div class="card-title">🔒 Change Password</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="form-group"><label>Current Password</label><input type="password" placeholder="••••••••"></div>
+            <div class="form-group"><label>New Password</label><input type="password" placeholder="••••••••"></div>
+            <div class="form-group"><label>Confirm New Password</label><input type="password" placeholder="••••••••"></div>
+          </div>
+          <button class="btn btn-primary mt-16" onclick="showToast('Password updated!','success')">🔒 Update Password</button>
+        </div>
+        <div class="card">
+          <div class="card-title">⚠️ Danger Zone</div>
+          <div style="font-size:13px;color:var(--text-mid);margin-bottom:16px;">Permanently clear all room data or reset the system. This cannot be undone.</div>
+          <div class="flex-row">
+            <button class="btn btn-danger" onclick="if(confirm('Clear all rooms? This cannot be undone!')){state.rooms=[];renderAllRooms();updateDashboard();showToast('All rooms cleared','info');}">🗑️ Clear All Rooms</button>
+            <button class="btn btn-secondary" onclick="logout()">🚪 Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ============ MODALS ============ -->
+
+<div class="modal-overlay" id="addGuestModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">👤 Add New Guest</div><div class="modal-close" onclick="closeModal('addGuestModal')">✕</div></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="g-name" placeholder="Full name"></div>
+      <div class="form-group"><label>Phone *</label><input type="tel" id="g-phone" placeholder="+91 ..."></div>
+      <div class="form-group"><label>Email</label><input type="email" id="g-email" placeholder="email@example.com"></div>
+      <div class="form-group"><label>ID Type</label><select id="g-idtype"><option>Aadhaar</option><option>PAN</option><option>Passport</option><option>Voter ID</option></select></div>
+      <div class="form-group"><label>Room</label><select id="g-room"><option value="">Select Room</option></select></div>
+      <div class="form-group"><label>Check-out Date</label><input type="date" id="g-checkout"></div>
+    </div>
+    <div class="flex-row mt-20">
+      <button class="btn btn-primary" onclick="addGuest()">✅ Add Guest</button>
+      <button class="btn btn-secondary" onclick="closeModal('addGuestModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="addBookingModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">📅 New Booking</div><div class="modal-close" onclick="closeModal('addBookingModal')">✕</div></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Guest Name *</label><input type="text" id="b-name" placeholder="Full name"></div>
+      <div class="form-group"><label>Phone *</label><input type="tel" id="b-phone"></div>
+      <div class="form-group"><label>Room Type</label><select id="b-type"><option>Dormitory</option><option>Private Single</option><option>Private Double</option><option>Family Suite</option></select></div>
+      <div class="form-group"><label>Check-in Date</label><input type="date" id="b-checkin"></div>
+      <div class="form-group"><label>Check-out Date</label><input type="date" id="b-checkout"></div>
+      <div class="form-group"><label>Advance (₹)</label><input type="number" id="b-advance" value="0"></div>
+    </div>
+    <div class="flex-row mt-20">
+      <button class="btn btn-primary" onclick="addBooking()">📋 Confirm Booking</button>
+      <button class="btn btn-secondary" onclick="closeModal('addBookingModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="addMaintModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">🔧 Maintenance Request</div><div class="modal-close" onclick="closeModal('addMaintModal')">✕</div></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Room</label><select id="m-room" id="m-room"><option>101</option><option>102</option><option>201</option></select></div>
+      <div class="form-group"><label>Priority</label><select id="m-priority"><option>high</option><option>medium</option><option>low</option></select></div>
+      <div class="form-group form-group-full"><label>Issue *</label><input type="text" id="m-desc" placeholder="Describe the issue..."></div>
+      <div class="form-group"><label>Assign To</label><select id="m-staff"><option>Rajesh Kumar</option><option>Sunil Verma</option><option>Amit Sharma</option></select></div>
+      <div class="form-group"><label>Due Date</label><input type="date" id="m-date"></div>
+    </div>
+    <div class="flex-row mt-20">
+      <button class="btn btn-primary" onclick="addMaintenance()">➕ Create</button>
+      <button class="btn btn-secondary" onclick="closeModal('addMaintModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="invoiceModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">💳 Record Payment</div><div class="modal-close" onclick="closeModal('invoiceModal')">✕</div></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Guest Name</label><input type="text" id="inv-guest" placeholder="Guest name"></div>
+      <div class="form-group"><label>Room</label><input type="text" id="inv-room" placeholder="Room number"></div>
+      <div class="form-group"><label>Amount (₹)</label><input type="number" id="inv-amount" placeholder="0"></div>
+      <div class="form-group"><label>Method</label><select id="inv-method"><option>Cash</option><option>UPI</option><option>Card</option><option>Online Transfer</option></select></div>
+    </div>
+    <div class="flex-row mt-20">
+      <button class="btn btn-primary" onclick="addPayment()">💳 Record</button>
+      <button class="btn btn-secondary" onclick="closeModal('invoiceModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="addItemModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">📦 Add Inventory Item</div><div class="modal-close" onclick="closeModal('addItemModal')">✕</div></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Item Name *</label><input type="text" id="itm-name" placeholder="Item name"></div>
+      <div class="form-group"><label>Category</label><select id="itm-cat"><option>linen</option><option>toiletries</option><option>kitchen</option><option>maintenance</option></select></div>
+      <div class="form-group"><label>Current Stock</label><input type="number" id="itm-stock" value="0"></div>
+      <div class="form-group"><label>Min Level</label><input type="number" id="itm-min" value="10"></div>
+    </div>
+    <div class="flex-row mt-20">
+      <button class="btn btn-primary" onclick="addInventoryItem()">➕ Add</button>
+      <button class="btn btn-secondary" onclick="closeModal('addItemModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="roomDetailModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="roomDetailTitle">Room Details</div><div class="modal-close" onclick="closeModal('roomDetailModal')">✕</div></div>
+    <div id="roomDetailContent"></div>
+    <div class="flex-row mt-20">
+      <button class="btn btn-danger btn-sm" id="roomDeleteBtn">🗑️ Delete Room</button>
+      <button class="btn btn-secondary" onclick="closeModal('roomDetailModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

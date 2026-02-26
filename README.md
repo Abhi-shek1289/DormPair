@@ -7,7 +7,7 @@ DormPair is a comprehensive, single-page web application designed to manage host
 Live URL: https://dormpairprojects.netlify.app/
 
 
-GitHub Repository: [Your GitHub Link Here] 
+GitHub Repository: https://github.com/Abhi-shek1289/DormPair
 
 🛠️ Technology Stack
 
